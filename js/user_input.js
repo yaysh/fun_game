@@ -7,14 +7,41 @@ Then halt movement until the player resets by letting the key go up.
 key_map = {
     37: 'left',
     39: 'right',
+    80: 'p'
 }
 
 var INPUT_RESET = true;
+var PAUSE = false;
+var GAME_OVER = false;
 
 function keydown(player, canvas) {
     return function (e) {
-        if (INPUT_RESET === false) return;
         const key = key_map[e.keyCode];
+        /*
+        If paused, unpause.
+        If unpaused, pause.
+        */
+        if (key === 'p') {
+            if (PAUSE) {
+                PAUSE = false;
+            }else {
+                PAUSE = true;
+            }
+            return;
+        }
+
+        // TODO: Fix this so pause doesn't move the player This
+        // should be considered a temporary solution. Should
+        // be enough to check if paused in the game states update
+        // function to stop movement.
+        if (PAUSE || GAME_OVER) return;
+
+        // Below controls player movement, player has to released 
+        // the key before the next input is registered.
+        // Example: if the player presses right arrow, right arrow has
+        // to be released before the player can move to the right again
+        // meaning that holding the key down won't continuousyl move 
+        if (INPUT_RESET === false) return;
         if (key == 'left' || key == 'right') {
             INPUT_RESET = false;
             if (key == 'left') {
