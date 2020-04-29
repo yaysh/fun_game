@@ -30,10 +30,7 @@ function loop(state_manager, last_render, timestamp) {
 startGame = () => {    
     
     state_manager = new StateManager();
-    state_manager.push(new GameState());
-
-    // Set focus on the canvas.
-    document.getElementById("canvas").focus();
+    state_manager.push(new MenuState(state_manager));
 
     var last_render = 0
 

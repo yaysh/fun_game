@@ -17,18 +17,29 @@
 
 class GameState extends State {
 
-    constructor() {
-        super();
+    constructor (_state_manager) {
+        super(_state_manager);
         this.objects = [];
         this.player = null;
         this.number_of_tiles = 15;
         this.obj_width = window.innerWidth / this.number_of_tiles;
         this.obj_height = window.innerHeight / 10;
         this.threshold = 0.1;
+        this.canvas = null;
+        this.ctx = null;
         this.init();
     }
 
     init() {
+        // Clear body
+        document.body.innerHTML = "";
+
+        // Add canvas
+        var canvas = document.createElement('canvas');
+        document.body.appendChild(canvas);
+        this.canvas = canvas;
+        this.ctx = this.canvas.getContext("2d");
+
         var player = new Player(this.obj_width * 7, window.innerHeight - this.obj_height, 0, 0, this.obj_width, this.obj_height);
         this.addObject(new Enemy(this.obj_width * 3, 0, 0, 5, this.obj_width, this.obj_height));
         this.addObject(player);
@@ -54,9 +65,12 @@ class GameState extends State {
         this.generateObjects();
     }
 
-    draw(canvas, ctx) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        this.objects.map(x => x.draw(ctx) );
+    draw() {
+        // Check for resize of browser, in that case, redraw everything
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.objects.map(x => x.draw(this.ctx) );
     }
 
     collisionDetection() {

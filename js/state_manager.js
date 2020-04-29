@@ -10,27 +10,21 @@ for the user. The states in this game are the following:
 class StateManager {
 
     constructor () {
-        this.current_state = null;
-        this.canvas = document.getElementById("canvas");
-        this.ctx = this.canvas.getContext("2d");     
+        this.stack = new Stack();
     }
 
 
     update(progress) {
-        if (GAME_OVER) this.push(new GameOverState());
-        this.current_state.update(progress);
+        // if (GAME_OVER) this.push(new GameOverState());
+        this.stack.peek().update(progress);
     }
 
     draw() {
-        // Check for resize of browser, in that case, redraw everything
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-        this.current_state.draw(this.canvas, this.ctx);
+        this.stack.peek().draw();
     }
 
     push(_state) {
-        this.current_state = _state;
+        this.stack.push(_state);
     }
-
 
 }

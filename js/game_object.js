@@ -55,7 +55,7 @@ class GameEntity extends GameObject {
 class Player extends GameEntity {
     constructor(x, y, vx, vy, width, height) {
         super(x, y, vx, vy, width, height);
-        window.addEventListener("keydown", keydown(this, canvas), false);
+        window.addEventListener("keydown", keydown(this, document.getElementById("canvas")), false);
         window.addEventListener("keyup", keyup(), false);
     }
 
@@ -86,16 +86,22 @@ class TextObject extends GameObject {
 }
 
 class Button extends GameObject {
-    constructor(x, y, width, height) {
+    constructor(x, y, width, height, text) {
         super(x, y);
         this.width = width; 
         this.height = height;
+        this.text = text;
     }
 
     draw (ctx) {
         ctx.beginPath();
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.stroke();
+
+        ctx.fillStyle = "red";
+        ctx.font = "20pt sans-serif";
+        ctx.fillText(this.text, this.x+10, this.y+this.height/2);
+
     }
 
     update(progress) {
