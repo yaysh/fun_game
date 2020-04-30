@@ -12,7 +12,6 @@ key_map = {
 
 var INPUT_RESET = true;
 var PAUSE = false;
-var GAME_OVER = false;
 
 function keydown(player, canvas) {
     return function (e) {
@@ -34,7 +33,7 @@ function keydown(player, canvas) {
         // should be considered a temporary solution. Should
         // be enough to check if paused in the game states update
         // function to stop movement.
-        if (PAUSE || GAME_OVER) return;
+        if (PAUSE) return;
 
         // Below controls player movement, player has to released 
         // the key before the next input is registered.
