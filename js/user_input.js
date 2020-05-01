@@ -45,15 +45,19 @@ function keydown(player, canvas) {
             INPUT_RESET = false;
             if (key == 'left') {
                 player.x -= player.width;
+                player.tile -= 1;
                 // Incase player moves too much to the left.
                 if (player.x < 0) {
                     player.x = 0;
+                    player.tile = 1;
                 }
             }
             if (key == 'right') {
                 player.x += player.width;
+                player.tile += 1;
                 if(player.x + player.width > canvas.width){
                     player.x = canvas.width - player.width;
+                    player.tile = 15;
                 }
             }
         }        

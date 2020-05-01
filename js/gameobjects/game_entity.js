@@ -1,11 +1,12 @@
 class GameEntity extends GameObject {
     
-    constructor(x, y, vx, vy, width, height) {
+    constructor(x, y, vx, vy, width, height, tile) {
         super(x, y);
         this.vx = vx;
         this.vy = vy;
         this.width = width;
         this.height = height;
+        this.tile = tile;
     }
 
     // TODO: make these abstract

@@ -29,15 +29,13 @@ class GameState extends State {
     }
 
     init() {
-        var player = new Player(this.obj_width * 7, window.innerHeight - this.obj_height, 0, 0, this.obj_width, this.obj_height);
-        this.addObject(new Enemy(this.obj_width * 3, 0, 0, 5, this.obj_width, this.obj_height));
+        var player = new Player(this.obj_width * 7, window.innerHeight - this.obj_height, 0, 0, this.obj_width, this.obj_height, 7);
+        this.addObject(new Enemy(this.obj_width * 3, 0, 0, 5, this.obj_width, this.obj_height, 3));
         this.addObject(player);
     }
 
     addObject(obj) {
         if (obj instanceof Player) this.player = obj;
-        if (obj instanceof Button) console.log("Button")
-        if (obj instanceof TextObject) console.log("Textobject")
         this.objects.push(obj);
     }
 
@@ -65,7 +63,7 @@ class GameState extends State {
             if (x instanceof Player) return true;
 
             // Check if the object is touching the player object
-            const same_x = Math.abs(x.x - this.player.x) < 1;
+            const same_x = (x.tile === this.player.tile) ;
             const below = (x.y + x.height) > this.player.y;
 
             // If object is vertically in the same position as the player 
@@ -100,7 +98,7 @@ class GameState extends State {
         let vy = 5;
         let width = this.obj_width;
         let height = this.obj_height;
-        this.addObject(new Enemy(x, y, vx, vy, width, height));
+        this.addObject(new Enemy(x, y, vx, vy, width, height, rnd_tile));
     }
     
 }
