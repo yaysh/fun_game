@@ -13,7 +13,7 @@
 // TODO: Should make sure that all objects are updated in size depending on screen size
 // IE dynamically sized enemy objects
 
-
+// TODO: Move settings to a settings object
 
 class GameState extends State {
 
@@ -40,6 +40,7 @@ class GameState extends State {
         var font = "20pt sans-serif";
         var score_text = new TextObject(window.innerWidth - 100, 100, font, this.score, "red");
         this.score_text = score_text;
+
     }
 
     addObject(obj) {
@@ -54,11 +55,15 @@ class GameState extends State {
         
         if (PAUSE) return;            
 
-        this.objects.map(x => x.update(progress));
+        // Ugly solution to fix dynamic sizes of sprites, where
+        // should it actually happen? In the object
+        this.objects.map(x => x.update(progress) );
         this.collisionDetection();
         this.generateObjects();
         this.score_text.text = this.score.toString();
-        console.log(this.score_text.text);
+
+        this.obj_width = window.innerWidth / this.number_of_tiles;
+        this.obj_height = window.innerHeight / 10;
     }
 
     draw(canvas, ctx) {
@@ -112,8 +117,7 @@ class GameState extends State {
         let x = this.obj_width * rnd_tile;
         let y = 0;
         let vx = 0;
-        // let vy = 5;
-        let vy = 0;
+        let vy = 5;
         let width = this.obj_width;
         let height = this.obj_height;
         this.addObject(new Enemy(x, y, vx, vy, width, height, rnd_tile));
