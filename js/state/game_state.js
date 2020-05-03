@@ -25,6 +25,8 @@ class GameState extends State {
         this.obj_width = window.innerWidth / this.number_of_tiles;
         this.obj_height = window.innerHeight / 10;
         this.threshold = 0.1;
+        this.score = 0;
+        this.score_text = null;
         this.init();
     }
 
@@ -32,6 +34,12 @@ class GameState extends State {
         var player = new Player(this.obj_width * 7, window.innerHeight - this.obj_height, 0, 0, this.obj_width, this.obj_height, 7);
         this.addObject(new Enemy(this.obj_width * 3, 0, 0, 5, this.obj_width, this.obj_height, 3));
         this.addObject(player);
+
+        //Add text object that represents scoreboard.
+        
+        var font = "20pt sans-serif";
+        var score_text = new TextObject(window.innerWidth - 100, 100, font, this.score, "red");
+        this.score_text = score_text;
     }
 
     addObject(obj) {
@@ -42,7 +50,6 @@ class GameState extends State {
     // Update positions of entities
     // Check collisions and handle collision
     // Handle generate new objects 
-    
     update(progress) {
         
         if (PAUSE) return;            
@@ -50,11 +57,19 @@ class GameState extends State {
         this.objects.map(x => x.update(progress));
         this.collisionDetection();
         this.generateObjects();
+        this.score_text.text = this.score.toString();
+        console.log(this.score_text.text);
     }
 
     draw(canvas, ctx) {
+        //Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        //Draw game objects
         this.objects.map(x => x.draw(ctx) );
+
+        //Draw score
+        this.score_text.draw(ctx);
     }
 
     collisionDetection() {
@@ -68,8 +83,10 @@ class GameState extends State {
 
             // If object is vertically in the same position as the player 
             // AND the object is below the player, it should be removed.
-            // Otherwise it should live to see another day
+            // Otherwise it should live to see another day.
+            // PS returning false = its dead
             if(same_x && below) {
+                this.score += 1;
                 return false;
             }else {
 
@@ -95,7 +112,8 @@ class GameState extends State {
         let x = this.obj_width * rnd_tile;
         let y = 0;
         let vx = 0;
-        let vy = 5;
+        // let vy = 5;
+        let vy = 0;
         let width = this.obj_width;
         let height = this.obj_height;
         this.addObject(new Enemy(x, y, vx, vy, width, height, rnd_tile));
