@@ -66,7 +66,7 @@ function keydown(player, canvas) {
                 // Incase player moves too much to the left.
                 if (player.x < 0) {
                     player.x = 0;
-                    player.tile = 1;
+                    player.tile = 0;
                 }
             }
             if (key == 'right') {
@@ -74,7 +74,7 @@ function keydown(player, canvas) {
                 player.tile += 1 * JUMP_DIST;
                 if(player.x + player.width > canvas.width){
                     player.x = canvas.width - player.width;
-                    player.tile = 15;
+                    player.tile = 14;
                 }
             }
             // Reset the jump distance

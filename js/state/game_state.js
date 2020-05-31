@@ -62,8 +62,7 @@ class GameState extends State {
         this.generateObjects();
         this.score_text.text = this.score.toString();
 
-        this.obj_width = window.innerWidth / this.number_of_tiles;
-        this.obj_height = window.innerHeight / 10;
+        console.log(this.player.tile);
     }
 
     draw(canvas, ctx) {
