@@ -27,19 +27,29 @@ class GameState extends State {
         this.threshold = 0.1;
         this.score = 0;
         this.score_text = null;
+        this.user_input = new UserInput();
         this.init();
+
     }
 
     init() {
-        var player = new Player(this.obj_width * 7, window.innerHeight - this.obj_height, 0, 0, this.obj_width, this.obj_height, 7);
+        const player = new Player(this.obj_width * 7, window.innerHeight - this.obj_height, 0, 0, this.obj_width, this.obj_height, 7);
         this.addObject(new Enemy(this.obj_width * 3, 0, 0, 5, this.obj_width, this.obj_height, 3));
         this.addObject(player);
 
         //Add text object that represents scoreboard.
         
-        var font = "20pt sans-serif";
-        var score_text = new TextObject(window.innerWidth - 100, 100, font, this.score, "red");
+        const font = "20pt sans-serif";
+        const score_text = new TextObject(window.innerWidth - 100, 100, font, this.score, "red");
         this.score_text = score_text;
+
+
+        document.addEventListener("keydown", event => {
+            this.user_input.keydown(event, player, this.state_manager.canvas);
+        });
+        document.addEventListener("keyup", event => {
+            this.user_input.keydown(event, this.player, this.state_manager.canvas);
+        });
 
     }
 
@@ -53,7 +63,7 @@ class GameState extends State {
     // Handle generate new objects 
     update(progress) {
         
-        if (PAUSE) return;            
+        if (this.user_input.PAUSE) return;            
 
         // Ugly solution to fix dynamic sizes of sprites, where
         // should it actually happen? In the object
@@ -98,6 +108,12 @@ class GameState extends State {
                 // of bounds, i. e. outside of the screen. 
                 // If it is, game over.
                 if (x.y + x.height >= window.innerHeight) {
+                    document.removeEventListener("keydown", event => {
+                        this.user_input.keydown(event, player, this.state_manager.canvas);
+                    });
+                    document.removeEventListener("keyup", event => {
+                        this.user_input.keydown(event, this.player, this.state_manager.canvas);
+                    });
                     this.state_manager.pop();
                 }
 

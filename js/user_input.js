@@ -4,32 +4,36 @@ Then halt movement until the player resets by letting the key go up.
 */
 
 
-key_map = {
-    37: 'left',
-    39: 'right',
-    80: 'p',
-    50: '2',
-    51: '3',
-    52: '4',
-    53: '5'
-}
+class UserInput {
 
-var INPUT_RESET = true;
-var PAUSE = false;
-var JUMP_DIST = 1;
+    constructor() {
+        this.INPUT_RESET = true;
+        this.PAUSE = false;
+        this.JUMP_DIST = 1;
+    }
 
-function keydown(player, canvas) {
-    return function (e) {
-        const key = key_map[e.keyCode];
+    keydown(e, player, canvas) {
+        const key_map = {
+            37: 'left',
+            39: 'right',
+            80: 'p',
+            50: '2',
+            51: '3',
+            52: '4',
+            53: '5'
+        };
+        const key = key_map[parseInt(e.keyCode)];
+        console.log(key);
+
         /*
         If paused, unpause.
         If unpaused, pause.
         */
-        if (key === 'p') {
-            if (PAUSE) {
-                PAUSE = false;
-            }else {
-                PAUSE = true;
+        if (key === 'p') {
+            if (this.PAUSE) {
+                this.PAUSE = false;
+            } else {
+                this.PAUSE = true;
             }
             return;
         }
@@ -38,18 +42,18 @@ function keydown(player, canvas) {
         // should be considered a temporary solution. Should
         // be enough to check if paused in the game states update
         // function to stop movement.
-        if (PAUSE) return;
+        if (this.PAUSE) return;
 
 
         // Change the distance to be jumped
         if (key === '2') {
-            JUMP_DIST = 2;
-         } else if (key === '3') {
-            JUMP_DIST = 3;
+            this.JUMP_DIST = 2;
+        } else if (key === '3') {
+            this.JUMP_DIST = 3;
         } else if (key === '4') {
-            JUMP_DIST = 4;
+            this.JUMP_DIST = 4;
         } else if (key === '5') {
-            JUMP_DIST = 5;
+            this.JUMP_DIST = 5;
         }
 
         // Below controls player movement, player has to released 
@@ -57,12 +61,12 @@ function keydown(player, canvas) {
         // Example: if the player presses right arrow, right arrow has
         // to be released before the player can move to the right again
         // meaning that holding the key down won't continuousyl move 
-        if (INPUT_RESET === false) return;
+        if (this.INPUT_RESET === false) return;
         if (key == 'left' || key == 'right') {
-            INPUT_RESET = false;
+            this.INPUT_RESET = false;
             if (key == 'left') {
-                player.x -= player.width * JUMP_DIST;
-                player.tile -= 1 * JUMP_DIST;
+                player.x -= player.width * this.JUMP_DIST;
+                player.tile -= 1 * this.JUMP_DIST;
                 // Incase player moves too much to the left.
                 if (player.x < 0) {
                     player.x = 0;
@@ -70,26 +74,32 @@ function keydown(player, canvas) {
                 }
             }
             if (key == 'right') {
-                player.x += player.width * JUMP_DIST;
-                player.tile += 1 * JUMP_DIST;
-                if(player.x + player.width > canvas.width){
+                player.x += player.width * this.JUMP_DIST;
+                player.tile += 1 * this.JUMP_DIST;
+                if (player.x + player.width > canvas.width) {
                     player.x = canvas.width - player.width;
                     player.tile = 14;
                 }
             }
             // Reset the jump distance
-            JUMP_DIST = 1;
-        }        
+            this.JUMP_DIST = 1;
+        }
     }
-}
 
-
-function keyup() {
-    return function(e) {
-        const key = key_map[e.keyCode];
+    keyup(e) {
+        const key = this.key_map[e.keyCode];
         if (key == 'left' || key == 'right') {
-            INPUT_RESET = true; 
+            this.INPUT_RESET = true;
         }
         return;
+
     }
 }
+
+
+
+
+
+
+
+
