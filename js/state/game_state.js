@@ -28,6 +28,9 @@ class GameState extends State {
         this.score = 0;
         this.score_text = null;
         this.user_input = new UserInput();
+        this.input_reset = true;
+        this.pause = false;
+        this.jump_dist = 1;
         this.init();
 
     }
@@ -43,12 +46,14 @@ class GameState extends State {
         const score_text = new TextObject(window.innerWidth - 100, 100, font, this.score, "red");
         this.score_text = score_text;
 
-
+        // User input 
         document.addEventListener("keydown", event => {
-            this.user_input.keydown(event, player, this.state_manager.canvas);
+            this.user_input.keydown(event, player, this.state_manager.canvas, 
+                this.input_reset, this.pause, this.jump_dist);
         });
         document.addEventListener("keyup", event => {
-            this.user_input.keydown(event, this.player, this.state_manager.canvas);
+            this.user_input.keydown(event, this.player, this.state_manager.canvas, 
+                this.input_reset, this.pause, this.jump_dist);
         });
 
     }
@@ -109,10 +114,12 @@ class GameState extends State {
                 // If it is, game over.
                 if (x.y + x.height >= window.innerHeight) {
                     document.removeEventListener("keydown", event => {
-                        this.user_input.keydown(event, player, this.state_manager.canvas);
+                        this.user_input.keydown(event, player, this.state_manager.canvas, 
+                            this.input_reset, this.pause, this.jump_dist);
                     });
                     document.removeEventListener("keyup", event => {
-                        this.user_input.keydown(event, this.player, this.state_manager.canvas);
+                        this.user_input.keydown(event, this.player, this.state_manager.canvas, 
+                            this.input_reset, this.pause, this.jump_dist);
                     });
                     this.state_manager.pop();
                 }

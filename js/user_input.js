@@ -7,12 +7,10 @@ Then halt movement until the player resets by letting the key go up.
 class UserInput {
 
     constructor() {
-        this.INPUT_RESET = true;
-        this.PAUSE = false;
-        this.JUMP_DIST = 1;
+
     }
 
-    keydown(e, player, canvas) {
+    keydown(e, player, canvas, input_reset, pause, jump_dist) {
         const key_map = {
             37: 'left',
             39: 'right',
@@ -30,10 +28,10 @@ class UserInput {
         If unpaused, pause.
         */
         if (key === 'p') {
-            if (this.PAUSE) {
-                this.PAUSE = false;
+            if (pause) {
+                pause = false;
             } else {
-                this.PAUSE = true;
+                pause = true;
             }
             return;
         }
@@ -42,18 +40,18 @@ class UserInput {
         // should be considered a temporary solution. Should
         // be enough to check if paused in the game states update
         // function to stop movement.
-        if (this.PAUSE) return;
+        if (pause) return;
 
 
         // Change the distance to be jumped
         if (key === '2') {
-            this.JUMP_DIST = 2;
+            jump_dist = 2;
         } else if (key === '3') {
-            this.JUMP_DIST = 3;
+            jump_dist = 3;
         } else if (key === '4') {
-            this.JUMP_DIST = 4;
+            jump_dist = 4;
         } else if (key === '5') {
-            this.JUMP_DIST = 5;
+            jump_dist = 5;
         }
 
         // Below controls player movement, player has to released 
@@ -61,12 +59,12 @@ class UserInput {
         // Example: if the player presses right arrow, right arrow has
         // to be released before the player can move to the right again
         // meaning that holding the key down won't continuousyl move 
-        if (this.INPUT_RESET === false) return;
+        if (input_reset === false) return;
         if (key == 'left' || key == 'right') {
-            this.INPUT_RESET = false;
+            input_reset = false;
             if (key == 'left') {
-                player.x -= player.width * this.JUMP_DIST;
-                player.tile -= 1 * this.JUMP_DIST;
+                player.x -= player.width * jump_dist;
+                player.tile -= 1 * jump_dist;
                 // Incase player moves too much to the left.
                 if (player.x < 0) {
                     player.x = 0;
@@ -74,22 +72,22 @@ class UserInput {
                 }
             }
             if (key == 'right') {
-                player.x += player.width * this.JUMP_DIST;
-                player.tile += 1 * this.JUMP_DIST;
+                player.x += player.width * jump_dist;
+                player.tile += 1 * jump_dist;
                 if (player.x + player.width > canvas.width) {
                     player.x = canvas.width - player.width;
                     player.tile = 14;
                 }
             }
             // Reset the jump distance
-            this.JUMP_DIST = 1;
+            jump_dist = 1;
         }
     }
 
-    keyup(e) {
+    keyup(e, input_reset) {
         const key = this.key_map[e.keyCode];
         if (key == 'left' || key == 'right') {
-            this.INPUT_RESET = true;
+            input_reset = true;
         }
         return;
 
