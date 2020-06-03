@@ -17,7 +17,7 @@ class TextObject extends GameObject {
         ctx.fillText(this.text, this.x, this.y);
     }
 
-    update(progress) {
+    update(progress: number) {
 
     }
 }
