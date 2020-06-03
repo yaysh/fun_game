@@ -13,6 +13,9 @@ var StateManager = /** @class */ (function () {
         this.canvas = document.createElement('canvas');
         this.canvas.id = "canvas";
         this.ctx = this.canvas.getContext("2d");
+        if (!(this.ctx = this.canvas.getContext("2d"))) {
+            throw new Error('2d context not supported or canvas already initialized');
+        }
         this.init();
     }
     StateManager.prototype.init = function () {

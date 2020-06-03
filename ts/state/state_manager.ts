@@ -11,13 +11,16 @@ class StateManager {
 
     stack: Stack;
     canvas: HTMLCanvasElement;
-    ctx: CanvasRenderingContext2D;
+    ctx: CanvasRenderingContext2D | null;
 
     constructor () {
         this.stack = new Stack();
         this.canvas = document.createElement('canvas');
         this.canvas.id = "canvas";
         this.ctx = this.canvas.getContext("2d");
+        if (!(this.ctx = this.canvas.getContext("2d"))) {
+            throw new Error('2d context not supported or canvas already initialized');
+        }
         this.init();
     }
 

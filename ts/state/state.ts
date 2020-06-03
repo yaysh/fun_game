@@ -8,7 +8,7 @@ abstract class State {
         this.state_manager = _state_manager;
     }
 
-    abstract draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D): void;
+    abstract draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D | null): void;
 
     abstract update(progress: Number): void;
 
