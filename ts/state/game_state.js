@@ -30,7 +30,6 @@ var GameState = /** @class */ (function (_super) {
     function GameState(_state_manager) {
         var _this = _super.call(this, _state_manager) || this;
         _this.objects = [];
-        _this.player = _this.addPlayer();
         _this.number_of_tiles = 15;
         _this.obj_width = window.innerWidth / _this.number_of_tiles;
         _this.obj_height = window.innerHeight / 10;
@@ -41,6 +40,7 @@ var GameState = /** @class */ (function (_super) {
         _this.input_reset = true;
         _this.pause = false;
         _this.jump_dist = 1;
+        _this.player = _this.addPlayer();
         _this.init();
         return _this;
     }
@@ -66,8 +66,6 @@ var GameState = /** @class */ (function (_super) {
         return player;
     };
     GameState.prototype.addObject = function (obj) {
-        if (obj instanceof Player)
-            this.player = obj;
         this.objects.push(obj);
     };
     // Update positions of entities

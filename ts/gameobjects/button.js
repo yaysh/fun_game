@@ -23,6 +23,7 @@ var Button = /** @class */ (function (_super) {
     }
     Button.prototype.draw = function (canvas, ctx) {
         ctx.beginPath();
+        ctx.fillStyle = "Black";
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.stroke();
         ctx.fillStyle = "red";

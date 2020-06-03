@@ -34,7 +34,6 @@ class GameState extends State {
     constructor (_state_manager: StateManager) {
         super(_state_manager);
         this.objects = [];
-        this.player = this.addPlayer();
         this.number_of_tiles = 15;
         this.obj_width = window.innerWidth / this.number_of_tiles;
         this.obj_height = window.innerHeight / 10;
@@ -45,6 +44,7 @@ class GameState extends State {
         this.input_reset = true;
         this.pause = false;
         this.jump_dist = 1;
+        this.player = this.addPlayer();
         this.init();
 
     }
@@ -80,7 +80,6 @@ class GameState extends State {
     }
 
     addObject(obj: GameObject) {
-        if (obj instanceof Player) this.player = obj;
         this.objects.push(obj);
     }
 

@@ -1,3 +1,8 @@
+interface MousePosition {
+    x: number,
+    y: number
+}
+
 class Button extends GameObject {
 
 
@@ -13,6 +18,7 @@ class Button extends GameObject {
 
     draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
         ctx.beginPath();
+        ctx.fillStyle = "Black";
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.stroke();
         ctx.fillStyle = "red";
@@ -28,7 +34,7 @@ class Button extends GameObject {
     addListener() {
         const canvas = document.getElementById("canvas") as HTMLCanvasElement;
         canvas.addEventListener('click', (event) => {
-            var mouse_pos = this.getCursorPosition(event);
+            var mouse_pos: MousePosition = this.getCursorPosition(event);
             if (mouse_pos.y > this.y && mouse_pos.y < this.y + this.height && mouse_pos.x > this.x && mouse_pos.x < this.x + this.width) {
                 this.button_clicked = true;
             }
