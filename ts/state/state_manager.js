@@ -10,14 +10,13 @@ for the user. The states in this game are the following:
 var StateManager = /** @class */ (function () {
     function StateManager() {
         this.stack = new Stack();
+        this.canvas = document.createElement('canvas');
+        this.canvas.id = "canvas";
+        this.ctx = this.canvas.getContext("2d");
         this.init();
     }
     StateManager.prototype.init = function () {
-        var canvas = document.createElement('canvas');
-        canvas.id = "canvas";
-        document.body.appendChild(canvas);
-        this.canvas = canvas;
-        this.ctx = this.canvas.getContext("2d");
+        document.body.appendChild(this.canvas);
     };
     StateManager.prototype.update = function (progress) {
         // if (GAME_OVER) this.push(new GameOverState());

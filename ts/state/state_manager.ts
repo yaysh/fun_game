@@ -10,38 +10,37 @@ for the user. The states in this game are the following:
 class StateManager {
 
     stack: Stack;
-    canvas?: HTMLCanvasElement;
-    ctx?: CanvasRenderingContext2D;
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
 
     constructor () {
         this.stack = new Stack();
+        this.canvas = document.createElement('canvas');
+        this.canvas.id = "canvas";
+        this.ctx = this.canvas.getContext("2d");
         this.init();
     }
 
-    init() {
-        var canvas: HTMLCanvasElement = document.createElement('canvas');
-        canvas.id = "canvas";
-        document.body.appendChild(canvas);
-        this.canvas = canvas;
-        this.ctx = this.canvas.getContext("2d");
+    init(): void {
+        document.body.appendChild(this.canvas);
     }
 
-    update(progress) {
+    update(progress: Number): void {
         // if (GAME_OVER) this.push(new GameOverState());
         this.stack.peek().update(progress);
     }
 
-    draw() {
+    draw(): void {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
         this.stack.peek().draw(this.canvas, this.ctx);
     }
 
-    push(_state: State) {
+    push(_state: State): void {
         this.stack.push(_state);
     }
 
-    pop() {
+    pop(): void {
         var old_state = this.stack.pop();
     }
 

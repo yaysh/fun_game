@@ -10,7 +10,7 @@ class Stack {
         this.stack.push(_state);
     }
 
-    peek() {
+    peek(): State {
         return this.stack[this.stack.length - 1]
     }
 

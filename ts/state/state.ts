@@ -1,17 +1,15 @@
 
 
-class State {
+abstract class State {
 
-    constructor (_state_manager) {
+    state_manager: StateManager;
+
+    constructor (_state_manager: StateManager) {
         this.state_manager = _state_manager;
     }
 
-    draw() {
+    abstract draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D): void;
 
-    }
-
-    update() {
-
-    }
+    abstract update(progress: Number): void;
 
 }
