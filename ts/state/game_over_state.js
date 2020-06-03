@@ -14,15 +14,15 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var GameOverState = /** @class */ (function (_super) {
     __extends(GameOverState, _super);
-    function GameOverState() {
-        var _this = _super.call(this) || this;
+    function GameOverState(_state_manager) {
+        var _this = _super.call(this, _state_manager) || this;
         _this.objects = [];
         _this.init();
         return _this;
     }
     GameOverState.prototype.init = function () {
-        this.objects.push(new TextObject(100, 100, '50px serif', "Game Over"));
-        this.objects.push(new Button(300, 300, 100, 100));
+        this.objects.push(new TextObject(100, 100, '50px serif', "Game Over", "White"));
+        this.objects.push(new Button(300, 300, 100, 100, "Hello"));
     };
     GameOverState.prototype.update = function (progress) {
         this.objects.map(function (x) { return x.update(progress); });
