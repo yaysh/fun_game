@@ -15,16 +15,14 @@ var __extends = (this && this.__extends) || (function () {
 var GameEntity = /** @class */ (function (_super) {
     __extends(GameEntity, _super);
     function GameEntity(x, y, vx, vy, width, height, tile) {
-        var _this = _super.call(this, x, y) || this;
+        var _this = _super.call(this, x, y, width, height) || this;
         _this.vx = vx;
         _this.vy = vy;
-        _this.width = width;
-        _this.height = height;
         _this.tile = tile;
         return _this;
     }
     // TODO: make these abstract
-    GameEntity.prototype.draw = function (ctx) {
+    GameEntity.prototype.draw = function (canvas, ctx) {
         ctx.beginPath();
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.stroke();

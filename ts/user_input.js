@@ -25,7 +25,7 @@ var UserInput = /** @class */ (function () {
         //     52: '4',
         //     53: '5'
         // };
-        var key_code = number(e.keyCode);
+        var key_code = e.keyCode;
         var key = this.key_map[key_code];
         /*
         If paused, unpause.

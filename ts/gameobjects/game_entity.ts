@@ -2,22 +2,18 @@ class GameEntity extends GameObject {
     
     vx: number;
     vy: number;
-    width: number;
-    height: number;
     tile: number;
 
 
     constructor(x: number, y: number, vx: number, vy: number, width: number, height: number, tile: number) {
-        super(x, y);
+        super(x, y, width, height);
         this.vx = vx;
         this.vy = vy;
-        this.width = width;
-        this.height = height;
         this.tile = tile;
     }
 
     // TODO: make these abstract
-    draw(ctx: CanvasRenderingContext2D) {      
+    draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {      
         ctx.beginPath();
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.stroke();

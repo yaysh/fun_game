@@ -17,16 +17,30 @@
 
 class GameState extends State {
 
-    constructor (_state_manager) {
+
+    objects: GameObject[];
+    player: Player;
+    number_of_tiles: number;
+    obj_width: number;
+    obj_height: number;
+    threshold: number;
+    score: number;
+    score_text: string;
+    user_input: UserInput;
+    input_reset: boolean;
+    pause: boolean;
+    jump_dist: number;
+
+    constructor (_state_manager: StateManager) {
         super(_state_manager);
         this.objects = [];
-        this.player = null;
+        this.player = this.addPlayer();
         this.number_of_tiles = 15;
         this.obj_width = window.innerWidth / this.number_of_tiles;
         this.obj_height = window.innerHeight / 10;
         this.threshold = 0.1;
         this.score = 0;
-        this.score_text = null;
+        this.score_text = "";
         this.user_input = new UserInput();
         this.input_reset = true;
         this.pause = false;
@@ -36,19 +50,19 @@ class GameState extends State {
     }
 
     init() {
-        const player = new Player(this.obj_width * 7, window.innerHeight - this.obj_height, 0, 0, this.obj_width, this.obj_height, 7);
+        //Initialize with one enemy
         this.addObject(new Enemy(this.obj_width * 3, 0, 0, 5, this.obj_width, this.obj_height, 3));
-        this.addObject(player);
 
         //Add text object that represents scoreboard.
         
         const font = "20pt sans-serif";
-        const score_text = new TextObject(window.innerWidth - 100, 100, font, this.score, "red");
-        this.score_text = score_text;
+
+        const score_text = new TextObject(window.innerWidth - 100, 100, font, this.score.toString(), "red");
+        this.score_text = score_text.toString();
 
         // User input 
         document.addEventListener("keydown", event => {
-            this.user_input.keydown(event, player, this.state_manager.canvas, 
+            this.user_input.keydown(event, this.player, this.state_manager.canvas, 
                 this.input_reset, this.pause, this.jump_dist);
         });
         document.addEventListener("keyup", event => {
@@ -58,7 +72,14 @@ class GameState extends State {
 
     }
 
-    addObject(obj) {
+
+    addPlayer(): Player {
+        const player = new Player(this.obj_width * 7, window.innerHeight - this.obj_height, 0, 0, this.obj_width, this.obj_height, 7);
+        this.addObject(player);
+        return player;
+    }
+
+    addObject(obj: GameObject) {
         if (obj instanceof Player) this.player = obj;
         this.objects.push(obj);
     }
@@ -66,29 +87,28 @@ class GameState extends State {
     // Update positions of entities
     // Check collisions and handle collision
     // Handle generate new objects 
-    update(progress) {
+    update(progress: number) {
         
-        if (this.user_input.PAUSE) return;            
+        if (this.pause) return;            
 
         // Ugly solution to fix dynamic sizes of sprites, where
         // should it actually happen? In the object
         this.objects.map(x => x.update(progress) );
         this.collisionDetection();
         this.generateObjects();
-        this.score_text.text = this.score.toString();
+        this.score_text = this.score.toString();
 
         console.log(this.player.tile);
     }
 
-    draw(canvas, ctx) {
+    draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
         //Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
         //Draw game objects
-        this.objects.map(x => x.draw(ctx) );
+        this.objects.map(x => x.draw(canvas, ctx) );
 
-        //Draw score
-        this.score_text.draw(ctx);
+        //TODO: Draw scoretext
     }
 
     collisionDetection() {
@@ -97,6 +117,9 @@ class GameState extends State {
             if (x instanceof Player) return true;
 
             // Check if the object is touching the player object
+            if (!(x instanceof GameEntity)) {
+                return false;
+            }
             const same_x = (x.tile === this.player.tile) ;
             const below = (x.y + x.height) > this.player.y;
 
@@ -114,7 +137,7 @@ class GameState extends State {
                 // If it is, game over.
                 if (x.y + x.height >= window.innerHeight) {
                     document.removeEventListener("keydown", event => {
-                        this.user_input.keydown(event, player, this.state_manager.canvas, 
+                        this.user_input.keydown(event, this.player, this.state_manager.canvas, 
                             this.input_reset, this.pause, this.jump_dist);
                     });
                     document.removeEventListener("keyup", event => {

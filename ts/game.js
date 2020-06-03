@@ -21,7 +21,7 @@ function loop(state_manager, last_render, timestamp) {
 }
 // Initialize the variables that control the game
 var startGame = function () {
-    state_manager: StateManager = new StateManager();
+    var state_manager = new StateManager();
     state_manager.push(new MenuState(state_manager));
     var last_render = 0;
     window.requestAnimationFrame(function (timestamp) {

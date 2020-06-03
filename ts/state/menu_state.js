@@ -17,7 +17,7 @@ var MenuState = /** @class */ (function (_super) {
     function MenuState(_state_manager) {
         var _this = _super.call(this, _state_manager) || this;
         _this.objects = [];
-        _this.play_button = null;
+        _this.play_button = _this.addPlayAgainButton();
         _this.init();
         return _this;
     }
@@ -39,13 +39,13 @@ var MenuState = /** @class */ (function (_super) {
         var btn_y = 250;
         var btn_height = 250;
         var btn_width = 250;
-        var btn = new Button(btn_x, btn_y, btn_height, btn_width, "PLAY", this.state_manager);
+        var btn = new Button(btn_x, btn_y, btn_height, btn_width, "PLAY");
         this.objects.push(btn);
-        this.play_button = btn;
+        return btn;
     };
     MenuState.prototype.draw = function (canvas, ctx) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        this.objects.map(function (x) { return x.draw(ctx); });
+        this.objects.map(function (x) { return x.draw(canvas, ctx); });
     };
     MenuState.prototype.update = function (progress) {
         // Check if play button has been clicked, in that case

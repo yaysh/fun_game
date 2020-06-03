@@ -12,13 +12,11 @@
 
 */
 var GameObject = /** @class */ (function () {
-    function GameObject(x, y) {
+    function GameObject(x, y, width, height) {
         this.x = x;
         this.y = y;
+        this.width = width;
+        this.height = height;
     }
-    GameObject.prototype.draw = function (ctx) {
-    };
-    GameObject.prototype.update = function (progress) {
-    };
     return GameObject;
 }());

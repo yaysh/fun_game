@@ -15,13 +15,13 @@ var __extends = (this && this.__extends) || (function () {
 var TextObject = /** @class */ (function (_super) {
     __extends(TextObject, _super);
     function TextObject(x, y, font, text, color) {
-        var _this = _super.call(this, x, y) || this;
+        var _this = _super.call(this, x, y, 0, 0) || this;
         _this.font = font;
         _this.text = text;
         _this.color = color;
         return _this;
     }
-    TextObject.prototype.draw = function (ctx) {
+    TextObject.prototype.draw = function (canvas, ctx) {
         ctx.fillStyle = this.color;
         ctx.font = this.font;
         ctx.fillText(this.text, this.x, this.y);

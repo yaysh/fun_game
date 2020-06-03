@@ -1,12 +1,12 @@
 class MenuState extends State {
 
     objects: GameObject[];
-    play_button: Button | null; //TODO: Look in to why this can be null. Delete if not necessary.
+    play_button: Button; //TODO: Look in to why this can be null. Delete if not necessary.
 
     constructor (_state_manager: StateManager) {
         super(_state_manager);
         this.objects = [];
-        this.play_button = null;
+        this.play_button = this.addPlayAgainButton();
         this.init();
     }
 
@@ -24,22 +24,22 @@ class MenuState extends State {
 
         Needs statemanager to be able to pop
     */
-    addPlayAgainButton() {
+    addPlayAgainButton(): Button {
         var btn_x = 250;
         var btn_y = 250;
         var btn_height = 250;
         var btn_width = 250;
-        var btn = new Button(btn_x, btn_y, btn_height, btn_width, "PLAY", this.state_manager);
+        var btn = new Button(btn_x, btn_y, btn_height, btn_width, "PLAY");
         this.objects.push(btn);
-        this.play_button = btn;
+        return btn
     }
 
-    draw(canvas, ctx) {
+    draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        this.objects.map(x => x.draw(ctx));
+        this.objects.map(x => x.draw(canvas, ctx));
     }
 
-    update(progress) {
+    update(progress: number) {
         // Check if play button has been clicked, in that case
         // pop state to resume game state
         if (this.play_button.button_clicked) {

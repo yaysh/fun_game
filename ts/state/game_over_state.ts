@@ -17,9 +17,9 @@ class GameOverState extends State {
         this.objects.map(x => x.update(progress));
     }
 
-    draw(ctx: CanvasRenderingContext2D) {
+    draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D): void {
         console.log(ctx);
-        this.objects.map(x => x.draw(ctx));
+        this.objects.map(x => x.draw(canvas, ctx));
     }
 
 }

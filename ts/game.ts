@@ -12,7 +12,7 @@
 
 
 // Main game loop
-function loop(state_manager: StateManager, last_render, timestamp) {
+function loop(state_manager: StateManager, last_render: number, timestamp: number) {
 
     const progress = timestamp - last_render;
 
@@ -29,7 +29,7 @@ function loop(state_manager: StateManager, last_render, timestamp) {
 // Initialize the variables that control the game
 const startGame = () => {    
     
-    state_manager: StateManager = new StateManager();
+    const state_manager: StateManager = new StateManager();
     state_manager.push(new MenuState(state_manager));
 
     var last_render = 0

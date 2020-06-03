@@ -11,23 +11,23 @@
 
 */
 
-class GameObject {
+abstract class GameObject {
 
     x: number;
     y: number;
+    width: number;
+    height: number;
 
-    constructor(x: number, y: number) {
+    constructor(x: number, y: number, width: number, height: number) {
         this.x = x;
         this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
-    draw(ctx: CanvasRenderingContext2D) {
+    abstract draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D): void;
 
-    }
-
-    update(progress: number) {
-
-    }
+    abstract update(progress: number): void;
 }
 
 

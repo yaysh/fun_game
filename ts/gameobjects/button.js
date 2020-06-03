@@ -15,15 +15,13 @@ var __extends = (this && this.__extends) || (function () {
 var Button = /** @class */ (function (_super) {
     __extends(Button, _super);
     function Button(x, y, width, height, text) {
-        var _this = _super.call(this, x, y) || this;
-        _this.width = width;
-        _this.height = height;
+        var _this = _super.call(this, x, y, width, height) || this;
         _this.text = text;
         _this.addListener();
         _this.button_clicked = false;
         return _this;
     }
-    Button.prototype.draw = function (ctx) {
+    Button.prototype.draw = function (canvas, ctx) {
         ctx.beginPath();
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.stroke();

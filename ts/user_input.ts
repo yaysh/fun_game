@@ -41,7 +41,7 @@ class UserInput {
         //     52: '4',
         //     53: '5'
         // };
-        const key_code: number = number(e.keyCode);
+        const key_code: number = e.keyCode;
         const key = this.key_map[key_code];
         /*
         If paused, unpause.
@@ -104,7 +104,7 @@ class UserInput {
         }
     }
 
-    keyup(e, input_reset: boolean) {
+    keyup(e: KeyboardEvent, input_reset: boolean) {
         const key = this.key_map[e.keyCode];
         if (key == 'left' || key == 'right') {
             input_reset = true;

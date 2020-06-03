@@ -11,7 +11,7 @@ class StateManager {
 
     stack: Stack;
     canvas: HTMLCanvasElement;
-    ctx: CanvasRenderingContext2D | null;
+    ctx: CanvasRenderingContext2D | null;
 
     constructor () {
         this.stack = new Stack();

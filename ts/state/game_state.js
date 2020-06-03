@@ -30,13 +30,13 @@ var GameState = /** @class */ (function (_super) {
     function GameState(_state_manager) {
         var _this = _super.call(this, _state_manager) || this;
         _this.objects = [];
-        _this.player = null;
+        _this.player = _this.addPlayer();
         _this.number_of_tiles = 15;
         _this.obj_width = window.innerWidth / _this.number_of_tiles;
         _this.obj_height = window.innerHeight / 10;
         _this.threshold = 0.1;
         _this.score = 0;
-        _this.score_text = null;
+        _this.score_text = "";
         _this.user_input = new UserInput();
         _this.input_reset = true;
         _this.pause = false;
@@ -46,20 +46,24 @@ var GameState = /** @class */ (function (_super) {
     }
     GameState.prototype.init = function () {
         var _this = this;
-        var player = new Player(this.obj_width * 7, window.innerHeight - this.obj_height, 0, 0, this.obj_width, this.obj_height, 7);
+        //Initialize with one enemy
         this.addObject(new Enemy(this.obj_width * 3, 0, 0, 5, this.obj_width, this.obj_height, 3));
-        this.addObject(player);
         //Add text object that represents scoreboard.
         var font = "20pt sans-serif";
-        var score_text = new TextObject(window.innerWidth - 100, 100, font, this.score, "red");
-        this.score_text = score_text;
+        var score_text = new TextObject(window.innerWidth - 100, 100, font, this.score.toString(), "red");
+        this.score_text = score_text.toString();
         // User input 
         document.addEventListener("keydown", function (event) {
-            _this.user_input.keydown(event, player, _this.state_manager.canvas, _this.input_reset, _this.pause, _this.jump_dist);
+            _this.user_input.keydown(event, _this.player, _this.state_manager.canvas, _this.input_reset, _this.pause, _this.jump_dist);
         });
         document.addEventListener("keyup", function (event) {
             _this.user_input.keydown(event, _this.player, _this.state_manager.canvas, _this.input_reset, _this.pause, _this.jump_dist);
         });
+    };
+    GameState.prototype.addPlayer = function () {
+        var player = new Player(this.obj_width * 7, window.innerHeight - this.obj_height, 0, 0, this.obj_width, this.obj_height, 7);
+        this.addObject(player);
+        return player;
     };
     GameState.prototype.addObject = function (obj) {
         if (obj instanceof Player)
@@ -70,23 +74,22 @@ var GameState = /** @class */ (function (_super) {
     // Check collisions and handle collision
     // Handle generate new objects 
     GameState.prototype.update = function (progress) {
-        if (this.user_input.PAUSE)
+        if (this.pause)
             return;
         // Ugly solution to fix dynamic sizes of sprites, where
         // should it actually happen? In the object
         this.objects.map(function (x) { return x.update(progress); });
         this.collisionDetection();
         this.generateObjects();
-        this.score_text.text = this.score.toString();
+        this.score_text = this.score.toString();
         console.log(this.player.tile);
     };
     GameState.prototype.draw = function (canvas, ctx) {
         //Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         //Draw game objects
-        this.objects.map(function (x) { return x.draw(ctx); });
-        //Draw score
-        this.score_text.draw(ctx);
+        this.objects.map(function (x) { return x.draw(canvas, ctx); });
+        //TODO: Draw scoretext
     };
     GameState.prototype.collisionDetection = function () {
         var _this = this;
@@ -95,6 +98,9 @@ var GameState = /** @class */ (function (_super) {
             if (x instanceof Player)
                 return true;
             // Check if the object is touching the player object
+            if (!(x instanceof GameEntity)) {
+                return false;
+            }
             var same_x = (x.tile === _this.player.tile);
             var below = (x.y + x.height) > _this.player.y;
             // If object is vertically in the same position as the player 
@@ -111,7 +117,7 @@ var GameState = /** @class */ (function (_super) {
                 // If it is, game over.
                 if (x.y + x.height >= window.innerHeight) {
                     document.removeEventListener("keydown", function (event) {
-                        _this.user_input.keydown(event, player, _this.state_manager.canvas, _this.input_reset, _this.pause, _this.jump_dist);
+                        _this.user_input.keydown(event, _this.player, _this.state_manager.canvas, _this.input_reset, _this.pause, _this.jump_dist);
                     });
                     document.removeEventListener("keyup", function (event) {
                         _this.user_input.keydown(event, _this.player, _this.state_manager.canvas, _this.input_reset, _this.pause, _this.jump_dist);

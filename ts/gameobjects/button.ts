@@ -1,21 +1,17 @@
 class Button extends GameObject {
 
 
-    width: number;
-    height: number;
     text: string;
     button_clicked: Boolean
 
     constructor(x: number, y: number, width: number, height: number, text: string) {
-        super(x, y);
-        this.width = width;
-        this.height = height;
+        super(x, y, width, height);
         this.text = text;
         this.addListener();
         this.button_clicked = false;
     }
 
-    draw(ctx: CanvasRenderingContext2D) {
+    draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
         ctx.beginPath();
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.stroke();
