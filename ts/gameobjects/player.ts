@@ -1,5 +1,5 @@
 class Player extends GameEntity {
-    constructor(x: Number, y: Number, vx: Number, vy: Number, width: Number, height: Number, tile: Number) {
+    constructor(x: number, y: number, vx: number, vy: number, width: number, height: number, tile: number) {
         super(x, y, vx, vy, width, height, tile);
     }
 

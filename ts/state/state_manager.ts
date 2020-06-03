@@ -28,7 +28,7 @@ class StateManager {
         document.body.appendChild(this.canvas);
     }
 
-    update(progress: Number): void {
+    update(progress: number): void {
         // if (GAME_OVER) this.push(new GameOverState());
         this.stack.peek().update(progress);
     }

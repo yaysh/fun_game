@@ -41,7 +41,7 @@ class UserInput {
         //     52: '4',
         //     53: '5'
         // };
-        const key_code: number = Number(e.keyCode);
+        const key_code: number = number(e.keyCode);
         const key = this.key_map[key_code];
         /*
         If paused, unpause.

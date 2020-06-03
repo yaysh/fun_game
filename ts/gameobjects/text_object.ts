@@ -4,7 +4,7 @@ class TextObject extends GameObject {
     text: string;
     color: string;
 
-    constructor(x: Number, y: Number, font: string, text: string, color: string) {
+    constructor(x: number, y: number, font: string, text: string, color: string) {
         super(x, y);
         this.font = font;
         this.text = text;

@@ -45,6 +45,10 @@ var Button = /** @class */ (function (_super) {
     };
     Button.prototype.getCursorPosition = function (event) {
         var canvas = document.getElementById("canvas");
+        if (canvas === null) {
+            throw new Error("Could not identify canvas @button.ts -> getCursorPosition. Canvas is null");
+        }
+        ;
         var rect = canvas.getBoundingClientRect();
         var x = event.clientX - rect.left;
         var y = event.clientY - rect.top;

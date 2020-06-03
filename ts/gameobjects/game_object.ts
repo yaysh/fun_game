@@ -13,10 +13,10 @@
 
 class GameObject {
 
-    x: Number;
-    y: Number;
+    x: number;
+    y: number;
 
-    constructor(x: Number, y: Number) {
+    constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
     }
@@ -25,7 +25,7 @@ class GameObject {
 
     }
 
-    update(progress) {
+    update(progress: number) {
 
     }
 }

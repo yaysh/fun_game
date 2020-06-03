@@ -1,6 +1,9 @@
 class MenuState extends State {
 
-    constructor (_state_manager) {
+    objects: GameObject[];
+    play_button: Button | null; //TODO: Look in to why this can be null. Delete if not necessary.
+
+    constructor (_state_manager: StateManager) {
         super(_state_manager);
         this.objects = [];
         this.play_button = null;

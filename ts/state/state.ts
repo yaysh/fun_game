@@ -10,6 +10,6 @@ abstract class State {
 
     abstract draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D | null): void;
 
-    abstract update(progress: Number): void;
+    abstract update(progress: number): void;
 
 }

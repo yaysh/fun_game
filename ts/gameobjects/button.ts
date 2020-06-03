@@ -1,30 +1,36 @@
 class Button extends GameObject {
-    constructor(x, y, width, height, text) {
+
+
+    width: number;
+    height: number;
+    text: string;
+    button_clicked: Boolean
+
+    constructor(x: number, y: number, width: number, height: number, text: string) {
         super(x, y);
-        this.width = width; 
+        this.width = width;
         this.height = height;
         this.text = text;
         this.addListener();
         this.button_clicked = false;
     }
 
-    draw (ctx) {
+    draw(ctx: CanvasRenderingContext2D) {
         ctx.beginPath();
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.stroke();
-
         ctx.fillStyle = "red";
         ctx.font = "20pt sans-serif";
-        ctx.fillText(this.text, this.x+10, this.y+this.height/2);
+        ctx.fillText(this.text, this.x + 10, this.y + this.height / 2);
 
     }
 
-    update(progress) {
-        
+    update(progress: number) {
+
     }
 
     addListener() {
-        var canvas = document.getElementById("canvas");
+        const canvas = document.getElementById("canvas") as HTMLCanvasElement;
         canvas.addEventListener('click', (event) => {
             var mouse_pos = this.getCursorPosition(event);
             if (mouse_pos.y > this.y && mouse_pos.y < this.y + this.height && mouse_pos.x > this.x && mouse_pos.x < this.x + this.width) {
@@ -33,12 +39,17 @@ class Button extends GameObject {
         });
     }
 
-    getCursorPosition(event) {
+    getCursorPosition(event: MouseEvent) {
         var canvas = document.getElementById("canvas");
+        if (canvas === null) {
+            throw new Error(
+                "Could not identify canvas @button.ts -> getCursorPosition. Canvas is null"
+            );
+        };
         var rect = canvas.getBoundingClientRect();
         var x = event.clientX - rect.left;
         var y = event.clientY - rect.top;
-        return {x: x, y: y};
+        return { x: x, y: y };
     }
 }
 
