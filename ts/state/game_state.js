@@ -96,7 +96,6 @@ var GameState = /** @class */ (function (_super) {
         this.generateObjects();
     };
     GameState.prototype.draw = function (canvas, ctx) {
-        console.log("Length of objects in draw", this.objects.length);
         //Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         //Draw game objects

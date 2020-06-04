@@ -114,9 +114,7 @@ class GameState extends State {
     }
 
     draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
-        
-        console.log("Length of objects in draw", this.objects.length);
-    
+            
         //Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
