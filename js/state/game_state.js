@@ -21,7 +21,7 @@ class GameState extends State {
         super(_state_manager);
         this.objects = [];
         this.player = null;
-        this.number_of_tiles = 15;
+        this.number_of_tiles = 14;
         this.obj_width = window.innerWidth / this.number_of_tiles;
         this.obj_height = window.innerHeight / 10;
         this.threshold = 0.1;

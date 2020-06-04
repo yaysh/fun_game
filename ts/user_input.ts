@@ -43,6 +43,7 @@ class UserInput {
         // };
         const key_code: number = e.keyCode;
         const key = this.key_map[key_code];
+        console.log(key);
         /*
         If paused, unpause.
         If unpaused, pause.
