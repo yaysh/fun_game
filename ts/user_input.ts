@@ -18,6 +18,7 @@ interface KeyMap {
 class UserInput {
 
     key_map: KeyMap;
+    jump_dist: number;
 
     constructor() {
         this.key_map = {
@@ -29,6 +30,7 @@ class UserInput {
             52: '4',
             53: '5'
         };
+        this.jump_dist = 1;
     }
 
     keydown(e: KeyboardEvent, player: Player, canvas: HTMLCanvasElement, input_reset: boolean, pause: boolean, jump_dist: number) {
@@ -43,7 +45,7 @@ class UserInput {
         // };
         const key_code: number = e.keyCode;
         const key = this.key_map[key_code];
-        console.log(key);
+
         /*
         If paused, unpause.
         If unpaused, pause.
@@ -63,16 +65,15 @@ class UserInput {
         // function to stop movement.
         if (pause) return;
 
-
         // Change the distance to be jumped
         if (key === '2') {
-            jump_dist = 2;
+            this.jump_dist = 2;
         } else if (key === '3') {
-            jump_dist = 3;
+            this.jump_dist = 3;
         } else if (key === '4') {
-            jump_dist = 4;
+            this.jump_dist = 4;
         } else if (key === '5') {
-            jump_dist = 5;
+            this.jump_dist = 5;
         }
 
         // Below controls player movement, player has to released 
@@ -84,8 +85,8 @@ class UserInput {
         if (key == 'left' || key == 'right') {
             input_reset = false;
             if (key == 'left') {
-                player.x -= player.width * jump_dist;
-                player.tile -= 1 * jump_dist;
+                player.x -= player.width * this.jump_dist;
+                player.tile -= 1 * this.jump_dist;
                 // Incase player moves too much to the left.
                 if (player.x < 0) {
                     player.x = 0;
@@ -93,15 +94,18 @@ class UserInput {
                 }
             }
             if (key == 'right') {
-                player.x += player.width * jump_dist;
-                player.tile += 1 * jump_dist;
+                player.x += player.width * this.jump_dist;
+                player.tile += 1 * this.jump_dist;
                 if (player.x + player.width > canvas.width) {
                     player.x = canvas.width - player.width;
                     player.tile = 14;
                 }
             }
             // Reset the jump distance
-            jump_dist = 1;
+            // Important that it happens when the player
+            // makes a movement and not every time this
+            // function is checked.
+            this.jump_dist = 1;
         }
     }
 

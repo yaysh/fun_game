@@ -157,7 +157,8 @@ class GameState extends State {
         const rnd_number = Math.floor(Math.random() * 101);  
         if (rnd_number > this.threshold) return; // For test, change < to > for real run
         // Find the x value of the generated object.
-        const rnd_tile = Math.floor(Math.random() * this.number_of_tiles+1);
+        const rnd_tile = Math.floor(Math.random() * this.number_of_tiles);
+        console.log("Generated at: ", rnd_tile);
         let x = this.obj_width * rnd_tile;
         let y = 0;
         let vx = 0;

@@ -30,7 +30,7 @@ var GameState = /** @class */ (function (_super) {
     function GameState(_state_manager) {
         var _this = _super.call(this, _state_manager) || this;
         _this.objects = [];
-        _this.number_of_tiles = 15;
+        _this.number_of_tiles = 14;
         _this.obj_width = window.innerWidth / _this.number_of_tiles;
         _this.obj_height = window.innerHeight / 10;
         _this.threshold = 0.1;
@@ -133,7 +133,8 @@ var GameState = /** @class */ (function (_super) {
         if (rnd_number > this.threshold)
             return; // For test, change < to > for real run
         // Find the x value of the generated object.
-        var rnd_tile = Math.floor(Math.random() * this.number_of_tiles + 1);
+        var rnd_tile = Math.floor(Math.random() * this.number_of_tiles);
+        console.log("Generated at: ", rnd_tile);
         var x = this.obj_width * rnd_tile;
         var y = 0;
         var vx = 0;

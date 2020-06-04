@@ -14,6 +14,7 @@ var UserInput = /** @class */ (function () {
             52: '4',
             53: '5'
         };
+        this.jump_dist = 1;
     }
     UserInput.prototype.keydown = function (e, player, canvas, input_reset, pause, jump_dist) {
         // const key_map = {
@@ -48,16 +49,16 @@ var UserInput = /** @class */ (function () {
             return;
         // Change the distance to be jumped
         if (key === '2') {
-            jump_dist = 2;
+            this.jump_dist = 2;
         }
         else if (key === '3') {
-            jump_dist = 3;
+            this.jump_dist = 3;
         }
         else if (key === '4') {
-            jump_dist = 4;
+            this.jump_dist = 4;
         }
         else if (key === '5') {
-            jump_dist = 5;
+            this.jump_dist = 5;
         }
         // Below controls player movement, player has to released 
         // the key before the next input is registered.
@@ -69,8 +70,8 @@ var UserInput = /** @class */ (function () {
         if (key == 'left' || key == 'right') {
             input_reset = false;
             if (key == 'left') {
-                player.x -= player.width * jump_dist;
-                player.tile -= 1 * jump_dist;
+                player.x -= player.width * this.jump_dist;
+                player.tile -= 1 * this.jump_dist;
                 // Incase player moves too much to the left.
                 if (player.x < 0) {
                     player.x = 0;
@@ -78,15 +79,18 @@ var UserInput = /** @class */ (function () {
                 }
             }
             if (key == 'right') {
-                player.x += player.width * jump_dist;
-                player.tile += 1 * jump_dist;
+                player.x += player.width * this.jump_dist;
+                player.tile += 1 * this.jump_dist;
                 if (player.x + player.width > canvas.width) {
                     player.x = canvas.width - player.width;
                     player.tile = 14;
                 }
             }
             // Reset the jump distance
-            jump_dist = 1;
+            // Important that it happens when the player
+            // makes a movement and not every time this
+            // function is checked.
+            this.jump_dist = 1;
         }
     };
     UserInput.prototype.keyup = function (e, input_reset) {
