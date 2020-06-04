@@ -28,7 +28,6 @@ var GameOverState = /** @class */ (function (_super) {
         this.objects.map(function (x) { return x.update(progress); });
     };
     GameOverState.prototype.draw = function (canvas, ctx) {
-        console.log(ctx);
         this.objects.map(function (x) { return x.draw(canvas, ctx); });
     };
     return GameOverState;

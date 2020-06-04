@@ -18,7 +18,6 @@ class GameOverState extends State {
     }
 
     draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D): void {
-        console.log(ctx);
         this.objects.map(x => x.draw(canvas, ctx));
     }
 

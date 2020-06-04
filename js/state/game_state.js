@@ -76,8 +76,6 @@ class GameState extends State {
         this.collisionDetection();
         this.generateObjects();
         this.score_text.text = this.score.toString();
-
-        console.log(this.player.tile);
     }
 
     draw(canvas, ctx) {

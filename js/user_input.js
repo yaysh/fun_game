@@ -21,7 +21,6 @@ class UserInput {
             53: '5'
         };
         const key = key_map[parseInt(e.keyCode)];
-        console.log(key);
 
         /*
         If paused, unpause.

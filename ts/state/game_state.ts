@@ -27,7 +27,6 @@ class GameState extends State {
     score: number;
     score_text: string;
     user_input: UserInput;
-    input_reset: boolean;
     pause: boolean;
     jump_dist: number;
 
@@ -40,8 +39,7 @@ class GameState extends State {
         this.threshold = 0.1;
         this.score = 0;
         this.score_text = "";
-        this.user_input = new UserInput();
-        this.input_reset = true;
+        this.user_input = new UserInput();        
         this.pause = false;
         this.jump_dist = 1;
         this.player = this.addPlayer();
@@ -63,11 +61,10 @@ class GameState extends State {
         // User input 
         document.addEventListener("keydown", event => {
             this.user_input.keydown(event, this.player, this.state_manager.canvas, 
-                this.input_reset, this.pause, this.jump_dist);
+                this.pause, this.jump_dist);
         });
         document.addEventListener("keyup", event => {
-            this.user_input.keydown(event, this.player, this.state_manager.canvas, 
-                this.input_reset, this.pause, this.jump_dist);
+            this.user_input.keyup(event);
         });
 
     }
@@ -96,8 +93,6 @@ class GameState extends State {
         this.collisionDetection();
         this.generateObjects();
         this.score_text = this.score.toString();
-
-        console.log(this.player.tile);
     }
 
     draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
@@ -137,11 +132,11 @@ class GameState extends State {
                 if (x.y + x.height >= window.innerHeight) {
                     document.removeEventListener("keydown", event => {
                         this.user_input.keydown(event, this.player, this.state_manager.canvas, 
-                            this.input_reset, this.pause, this.jump_dist);
+                            this.pause, this.jump_dist);
                     });
                     document.removeEventListener("keyup", event => {
                         this.user_input.keydown(event, this.player, this.state_manager.canvas, 
-                            this.input_reset, this.pause, this.jump_dist);
+                            this.pause, this.jump_dist);
                     });
                     this.state_manager.pop();
                 }
@@ -158,7 +153,6 @@ class GameState extends State {
         if (rnd_number > this.threshold) return; // For test, change < to > for real run
         // Find the x value of the generated object.
         const rnd_tile = Math.floor(Math.random() * this.number_of_tiles);
-        console.log("Generated at: ", rnd_tile);
         let x = this.obj_width * rnd_tile;
         let y = 0;
         let vx = 0;

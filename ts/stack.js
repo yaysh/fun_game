@@ -11,7 +11,6 @@ var Stack = /** @class */ (function () {
     };
     Stack.prototype.pop = function () {
         if (this.stack.length === 0) {
-            console.log("Stack is empty");
             return;
         }
         return this.stack.pop();

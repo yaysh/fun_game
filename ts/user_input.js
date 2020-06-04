@@ -15,8 +15,9 @@ var UserInput = /** @class */ (function () {
             53: '5'
         };
         this.jump_dist = 1;
+        this.input_reset = true;
     }
-    UserInput.prototype.keydown = function (e, player, canvas, input_reset, pause, jump_dist) {
+    UserInput.prototype.keydown = function (e, player, canvas, pause, jump_dist) {
         // const key_map = {
         //     37: 'left',
         //     39: 'right',
@@ -47,6 +48,13 @@ var UserInput = /** @class */ (function () {
         // function to stop movement.
         if (pause)
             return;
+        // Below controls player movement, player has to released 
+        // the key before the next input is registered.
+        // Example: if the player presses right arrow, right arrow has
+        // to be released before the player can move to the right again
+        // meaning that holding the key down won't continuousyl move 
+        if (this.input_reset === false)
+            return;
         // Change the distance to be jumped
         if (key === '2') {
             this.jump_dist = 2;
@@ -60,15 +68,8 @@ var UserInput = /** @class */ (function () {
         else if (key === '5') {
             this.jump_dist = 5;
         }
-        // Below controls player movement, player has to released 
-        // the key before the next input is registered.
-        // Example: if the player presses right arrow, right arrow has
-        // to be released before the player can move to the right again
-        // meaning that holding the key down won't continuousyl move 
-        if (input_reset === false)
-            return;
         if (key == 'left' || key == 'right') {
-            input_reset = false;
+            this.input_reset = false;
             if (key == 'left') {
                 player.x -= player.width * this.jump_dist;
                 player.tile -= 1 * this.jump_dist;
@@ -93,10 +94,11 @@ var UserInput = /** @class */ (function () {
             this.jump_dist = 1;
         }
     };
-    UserInput.prototype.keyup = function (e, input_reset) {
+    UserInput.prototype.keyup = function (e) {
         var key = this.key_map[e.keyCode];
+        console.log(this.input_reset, key);
         if (key == 'left' || key == 'right') {
-            input_reset = true;
+            this.input_reset = true;
         }
         return;
     };

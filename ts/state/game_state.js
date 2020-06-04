@@ -37,7 +37,6 @@ var GameState = /** @class */ (function (_super) {
         _this.score = 0;
         _this.score_text = "";
         _this.user_input = new UserInput();
-        _this.input_reset = true;
         _this.pause = false;
         _this.jump_dist = 1;
         _this.player = _this.addPlayer();
@@ -54,10 +53,10 @@ var GameState = /** @class */ (function (_super) {
         this.score_text = score_text.toString();
         // User input 
         document.addEventListener("keydown", function (event) {
-            _this.user_input.keydown(event, _this.player, _this.state_manager.canvas, _this.input_reset, _this.pause, _this.jump_dist);
+            _this.user_input.keydown(event, _this.player, _this.state_manager.canvas, _this.pause, _this.jump_dist);
         });
         document.addEventListener("keyup", function (event) {
-            _this.user_input.keydown(event, _this.player, _this.state_manager.canvas, _this.input_reset, _this.pause, _this.jump_dist);
+            _this.user_input.keyup(event);
         });
     };
     GameState.prototype.addPlayer = function () {
@@ -80,7 +79,6 @@ var GameState = /** @class */ (function (_super) {
         this.collisionDetection();
         this.generateObjects();
         this.score_text = this.score.toString();
-        console.log(this.player.tile);
     };
     GameState.prototype.draw = function (canvas, ctx) {
         //Clear canvas
@@ -115,10 +113,10 @@ var GameState = /** @class */ (function (_super) {
                 // If it is, game over.
                 if (x.y + x.height >= window.innerHeight) {
                     document.removeEventListener("keydown", function (event) {
-                        _this.user_input.keydown(event, _this.player, _this.state_manager.canvas, _this.input_reset, _this.pause, _this.jump_dist);
+                        _this.user_input.keydown(event, _this.player, _this.state_manager.canvas, _this.pause, _this.jump_dist);
                     });
                     document.removeEventListener("keyup", function (event) {
-                        _this.user_input.keydown(event, _this.player, _this.state_manager.canvas, _this.input_reset, _this.pause, _this.jump_dist);
+                        _this.user_input.keydown(event, _this.player, _this.state_manager.canvas, _this.pause, _this.jump_dist);
                     });
                     _this.state_manager.pop();
                 }
@@ -134,7 +132,6 @@ var GameState = /** @class */ (function (_super) {
             return; // For test, change < to > for real run
         // Find the x value of the generated object.
         var rnd_tile = Math.floor(Math.random() * this.number_of_tiles);
-        console.log("Generated at: ", rnd_tile);
         var x = this.obj_width * rnd_tile;
         var y = 0;
         var vx = 0;

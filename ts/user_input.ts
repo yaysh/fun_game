@@ -3,7 +3,7 @@ If the player presses a key, move the "square" x distance.
 Then halt movement until the player resets by letting the key go up.
 */
 
-interface KeyMap {
+interface KeyMap {
     37: string,
     39: string,
     80: string,
@@ -19,6 +19,7 @@ class UserInput {
 
     key_map: KeyMap;
     jump_dist: number;
+    input_reset: boolean;
 
     constructor() {
         this.key_map = {
@@ -31,9 +32,10 @@ class UserInput {
             53: '5'
         };
         this.jump_dist = 1;
+        this.input_reset = true;
     }
 
-    keydown(e: KeyboardEvent, player: Player, canvas: HTMLCanvasElement, input_reset: boolean, pause: boolean, jump_dist: number) {
+    keydown(e: KeyboardEvent, player: Player, canvas: HTMLCanvasElement, pause: boolean, jump_dist: number) {
         // const key_map = {
         //     37: 'left',
         //     39: 'right',
@@ -65,6 +67,13 @@ class UserInput {
         // function to stop movement.
         if (pause) return;
 
+        // Below controls player movement, player has to released 
+        // the key before the next input is registered.
+        // Example: if the player presses right arrow, right arrow has
+        // to be released before the player can move to the right again
+        // meaning that holding the key down won't continuousyl move 
+        if (this.input_reset === false) return;
+
         // Change the distance to be jumped
         if (key === '2') {
             this.jump_dist = 2;
@@ -76,14 +85,8 @@ class UserInput {
             this.jump_dist = 5;
         }
 
-        // Below controls player movement, player has to released 
-        // the key before the next input is registered.
-        // Example: if the player presses right arrow, right arrow has
-        // to be released before the player can move to the right again
-        // meaning that holding the key down won't continuousyl move 
-        if (input_reset === false) return;
         if (key == 'left' || key == 'right') {
-            input_reset = false;
+            this.input_reset = false;
             if (key == 'left') {
                 player.x -= player.width * this.jump_dist;
                 player.tile -= 1 * this.jump_dist;
@@ -109,10 +112,11 @@ class UserInput {
         }
     }
 
-    keyup(e: KeyboardEvent, input_reset: boolean) {
+    keyup(e: KeyboardEvent) {
         const key = this.key_map[e.keyCode];
+        console.log(this.input_reset, key);
         if (key == 'left' || key == 'right') {
-            input_reset = true;
+            this.input_reset = true;
         }
         return;
 

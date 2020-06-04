@@ -16,7 +16,6 @@ class GameOverState extends State {
     }
 
     draw(ctx) {
-        console.log(ctx);
         this.objects.map(x => x.draw(ctx));
     }
 
