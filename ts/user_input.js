@@ -96,7 +96,6 @@ var UserInput = /** @class */ (function () {
     };
     UserInput.prototype.keyup = function (e) {
         var key = this.key_map[e.keyCode];
-        console.log(this.input_reset, key);
         if (key == 'left' || key == 'right') {
             this.input_reset = true;
         }

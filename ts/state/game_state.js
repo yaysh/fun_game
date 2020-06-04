@@ -33,12 +33,14 @@ var GameState = /** @class */ (function (_super) {
         _this.number_of_tiles = 14;
         _this.obj_width = window.innerWidth / _this.number_of_tiles;
         _this.obj_height = window.innerHeight / 10;
-        _this.threshold = 0.1;
-        _this.score = 0;
-        _this.score_text = "";
-        _this.user_input = new UserInput();
+        _this.threshold = 1;
         _this.pause = false;
         _this.jump_dist = 1;
+        _this.latest_generated_tile = 3;
+        _this.enemy_color = "black";
+        _this.player_color = "red";
+        _this.user_input = new UserInput();
+        _this.score_text = _this.generateScoreTextObject();
         _this.player = _this.addPlayer();
         _this.init();
         return _this;
@@ -46,11 +48,7 @@ var GameState = /** @class */ (function (_super) {
     GameState.prototype.init = function () {
         var _this = this;
         //Initialize with one enemy
-        this.addObject(new Enemy(this.obj_width * 3, 0, 0, 5, this.obj_width, this.obj_height, 3));
-        //Add text object that represents scoreboard.
-        var font = "20pt sans-serif";
-        var score_text = new TextObject(window.innerWidth - 100, 100, font, this.score.toString(), "red");
-        this.score_text = score_text.toString();
+        this.addObject(new Enemy(this.obj_width * 3, 0, 0, 5, this.enemy_color, this.obj_width, this.obj_height, this.latest_generated_tile));
         // User input 
         document.addEventListener("keydown", function (event) {
             _this.user_input.keydown(event, _this.player, _this.state_manager.canvas, _this.pause, _this.jump_dist);
@@ -58,9 +56,27 @@ var GameState = /** @class */ (function (_super) {
         document.addEventListener("keyup", function (event) {
             _this.user_input.keyup(event);
         });
+        // Supporting lines that show the lanes
+        this.addLines();
+    };
+    GameState.prototype.addLines = function () {
+        for (var i = 0; i < this.number_of_tiles; i++) {
+            var x = this.obj_width / 2 + (i * this.obj_width);
+            var y = 0;
+            var x_too = x;
+            var y_too = window.innerHeight;
+            var line = new Line(x, y, x_too, y_too);
+            this.addObject(line);
+        }
+    };
+    GameState.prototype.generateScoreTextObject = function () {
+        var x = window.innerWidth - 100;
+        var score_text_object = new TextObject(x, 50, "40pt sans-serif", "0", "red");
+        this.addObject(score_text_object);
+        return score_text_object;
     };
     GameState.prototype.addPlayer = function () {
-        var player = new Player(this.obj_width * 7, window.innerHeight - this.obj_height, 0, 0, this.obj_width, this.obj_height, 7);
+        var player = new Player(this.obj_width * 7, window.innerHeight - this.obj_height, 0, 0, this.player_color, this.obj_width, this.obj_height, 7);
         this.addObject(player);
         return player;
     };
@@ -78,14 +94,13 @@ var GameState = /** @class */ (function (_super) {
         this.objects.map(function (x) { return x.update(progress); });
         this.collisionDetection();
         this.generateObjects();
-        this.score_text = this.score.toString();
     };
     GameState.prototype.draw = function (canvas, ctx) {
+        console.log("Length of objects in draw", this.objects.length);
         //Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         //Draw game objects
         this.objects.map(function (x) { return x.draw(canvas, ctx); });
-        //TODO: Draw scoretext
     };
     GameState.prototype.collisionDetection = function () {
         var _this = this;
@@ -95,7 +110,7 @@ var GameState = /** @class */ (function (_super) {
                 return true;
             // Check if the object is touching the player object
             if (!(x instanceof GameEntity)) {
-                return false;
+                return true;
             }
             var same_x = (x.tile === _this.player.tile);
             var below = (x.y + x.height) > _this.player.y;
@@ -104,7 +119,11 @@ var GameState = /** @class */ (function (_super) {
             // Otherwise it should live to see another day.
             // PS returning false = its dead
             if (same_x && below) {
-                _this.score += 1;
+                var new_score = parseInt(_this.score_text.text) + 1;
+                if (new_score % 10 === 0) {
+                    _this.threshold *= 2;
+                }
+                _this.score_text.text = new_score.toString();
                 return false;
             }
             else {
@@ -124,6 +143,15 @@ var GameState = /** @class */ (function (_super) {
             }
         });
     };
+    GameState.prototype.getTileWithinXTiles = function (dist, latest_generated_tile) {
+        while (true) {
+            var rnd_tile = Math.floor(Math.random() * this.number_of_tiles);
+            if (Math.abs(rnd_tile - latest_generated_tile) <= dist) {
+                this.latest_generated_tile = rnd_tile;
+                return rnd_tile;
+            }
+        }
+    };
     GameState.prototype.generateObjects = function () {
         // Generate number between 0 - 100. If the number is below or equal to the threshold,
         // generate an object.
@@ -131,14 +159,14 @@ var GameState = /** @class */ (function (_super) {
         if (rnd_number > this.threshold)
             return; // For test, change < to > for real run
         // Find the x value of the generated object.
-        var rnd_tile = Math.floor(Math.random() * this.number_of_tiles);
+        var rnd_tile = this.getTileWithinXTiles(5, this.latest_generated_tile);
         var x = this.obj_width * rnd_tile;
         var y = 0;
         var vx = 0;
         var vy = 5;
         var width = this.obj_width;
         var height = this.obj_height;
-        this.addObject(new Enemy(x, y, vx, vy, width, height, rnd_tile));
+        this.addObject(new Enemy(x, y, vx, vy, this.enemy_color, width, height, rnd_tile));
     };
     return GameState;
 }(State));

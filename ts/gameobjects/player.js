@@ -14,8 +14,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Player = /** @class */ (function (_super) {
     __extends(Player, _super);
-    function Player(x, y, vx, vy, width, height, tile) {
-        return _super.call(this, x, y, vx, vy, width, height, tile) || this;
+    function Player(x, y, vx, vy, color, width, height, tile) {
+        return _super.call(this, x, y, vx, vy, color, width, height, tile) || this;
     }
     return Player;
 }(GameEntity));

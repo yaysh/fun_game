@@ -12,28 +12,24 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var GameEntity = /** @class */ (function (_super) {
-    __extends(GameEntity, _super);
-    function GameEntity(x, y, vx, vy, color, width, height, tile) {
-        var _this = _super.call(this, x, y, width, height, color) || this;
-        _this.vx = vx;
-        _this.vy = vy;
-        _this.tile = tile;
+var Line = /** @class */ (function (_super) {
+    __extends(Line, _super);
+    function Line(x, y, x_too, y_too) {
+        var _this = _super.call(this, x, y, 0, 0, "black") || this;
+        _this.x_too = x_too;
+        _this.y_too = y_too;
         return _this;
     }
-    // TODO: make these abstract
-    GameEntity.prototype.draw = function (canvas, ctx) {
+    Line.prototype.draw = function (canvas, ctx) {
         ctx.beginPath();
         ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.setLineDash([5, 15]);
+        ctx.moveTo(this.x, this.y);
+        ctx.lineTo(this.x_too, this.y_too);
         ctx.stroke();
     };
-    // TODO: make these abstract
-    GameEntity.prototype.update = function (progress) {
-        var p = progress / 16;
-        this.x += this.vx;
-        this.y += this.vy;
+    Line.prototype.update = function (progress) {
+        return;
     };
-    return GameEntity;
+    return Line;
 }(GameObject));
-;

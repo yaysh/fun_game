@@ -5,8 +5,8 @@ class GameEntity extends GameObject {
     tile: number;
 
 
-    constructor(x: number, y: number, vx: number, vy: number, width: number, height: number, tile: number) {
-        super(x, y, width, height);
+    constructor(x: number, y: number, vx: number, vy: number, color: string, width: number, height: number, tile: number) {
+        super(x, y, width, height, color);
         this.vx = vx;
         this.vy = vy;
         this.tile = tile;
@@ -15,6 +15,7 @@ class GameEntity extends GameObject {
     // TODO: make these abstract
     draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {      
         ctx.beginPath();
+        ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.stroke();
     }

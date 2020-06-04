@@ -114,7 +114,6 @@ class UserInput {
 
     keyup(e: KeyboardEvent) {
         const key = this.key_map[e.keyCode];
-        console.log(this.input_reset, key);
         if (key == 'left' || key == 'right') {
             this.input_reset = true;
         }

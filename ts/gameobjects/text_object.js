@@ -25,6 +25,9 @@ var TextObject = /** @class */ (function (_super) {
         ctx.fillStyle = this.color;
         ctx.font = this.font;
         ctx.fillText(this.text, this.x, this.y);
+        // ctx.font = 'italic 40pt Calibri';
+        // ctx.fillStyle = "black";
+        // ctx.fillText('Hello World',50,50);
     };
     TextObject.prototype.update = function (progress) {
     };
